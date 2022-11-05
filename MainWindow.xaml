@@ -1,0 +1,129 @@
+﻿<Window x:Class="ZatBlagTestWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZatBlagTestWPF"
+        mc:Ignorable="d"
+        Title="Zatvaranje Blagajne iz Baze" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="#143D59">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="450"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="500"/>
+                    <ColumnDefinition Width="500"/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+        </StackPanel>
+
+        <Border Grid.Row="1" Width="800" CornerRadius="10" BorderThickness="5">
+            <!--Border brush lets us show the curves on the corners-->
+            <Border.BorderBrush>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Color="#DEAC34" Offset="0.0"/>
+                    <GradientStop Color="#F4B41A" Offset="0.50"/>
+                </LinearGradientBrush>
+            </Border.BorderBrush>
+            <Rectangle Grid.Row="1">
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#DEAC34" Offset="0.0"/>
+                        <GradientStop Color="#F4B41A" Offset="0.50" />
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+        </Border>
+        <StackPanel Width="1000" Height="50" Grid.Row="0" Orientation="Horizontal">
+            <Label Content="Zatvaranje Blagajne iz Baze" Width="1000" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                   FontSize="20" Foreground="#F4B41A" FontWeight="Bold"/>
+        </StackPanel>
+
+        <StackPanel Width="1000" Height="50" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Label Height="40" Width="150" Content="Poslovnica : " Margin="200 0 0 0" VerticalAlignment="Bottom" Foreground="#143D59" FontSize="20"></Label>
+            <Label Height="40" Width="150" Content="Datum : " Margin="100 0 0 0" VerticalAlignment="Bottom" Foreground="#143D59" FontSize="20"></Label>
+            <Label Height="40" Width="150" Content="Blagajna : " Margin="100 0 0 0" VerticalAlignment="Bottom" Foreground="#143D59" FontSize="20"></Label>
+        </StackPanel>
+
+        <StackPanel Width="1000" Height="50" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            <TextBox Name="txtPoslovnica" Width="150" Height="30" Margin="180 0 0 0" PreviewTextInput="NumberValidationTextBox" FontSize="18" VerticalContentAlignment="Center" VerticalAlignment="Top" MaxLength="6"/>
+            <DatePicker Name ="dtDatum" Width="150" Height="30" Margin="100 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Top" VerticalContentAlignment="Center" FirstDayOfWeek="Monday" IsTodayHighlighted="True" />
+            <TextBox Name="txtBlag" Width="150" Height="30" Margin="100 0 0 0" PreviewTextInput="NumberValidationTextBox" FontSize="18" VerticalContentAlignment="Center" VerticalAlignment="Top" MaxLength="4"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Width="500">
+            <Label  Name="lbResult" Height="50" Width="400" Content="Proveri da li su zatvorene blagajne" Margin="0 50 0 5" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                   Foreground="#F4B41A" FontWeight="DemiBold"/>
+            <DataGrid Name="dataBaza" Width="400" Height="300" Margin="0 10 0 0"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Width="500">
+            <Button Name ="btnProvera" Content="Provera" Height="70" Width="200" FontSize="20" FontWeight="Bold" Foreground="#143D59" VerticalAlignment="Center" Margin="0 100 0 10"
+                    Click="Provera_Click">
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#DEAC34" Offset="0.0"/>
+                        <GradientStop Color="#F4B41A" Offset="0.5"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <!--Setter Property="Background" Value="#D6CD0D"/-->
+                                <Setter Property="Foreground" Value="#305ABD"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="False">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border CornerRadius="10" Background="{TemplateBinding Background}" BorderThickness="1">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"></ContentPresenter>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Name ="btnZatvori" Content="Zatvori !" Height="150" Width="200" FontSize="20" FontWeight="Bold" Foreground="#143D59" VerticalAlignment="Center" Margin="0 60 0 0"
+                    Click="Zatvori_Click" Visibility="Hidden">
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop x:Name="ZatGradStop1" Color="#DEAC34" Offset="0.0"/>
+                        <GradientStop x:Name ="ZatGradStop2" Color="#F4B41A" Offset="0.5"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <!--Setter Property="Background" Value="#D6CD0D"/-->
+                                <Setter Property="Foreground" Value="#305ABD"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="False">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border CornerRadius="10" Background="{TemplateBinding Background}" BorderThickness="1">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"></ContentPresenter>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </StackPanel>
+
+
+    </Grid>
+</Window>
